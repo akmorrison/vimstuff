@@ -1,3 +1,20 @@
+" -- Vundle Settings {{{
+" Options taken from vundle's github page https://github.com/VundleVim/Vundle.vim
+set nocompatible
+filetype off " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" All of your Pluginsmust be added before the following line
+call vundle#end()         " required
+filetype plugin indent on " required
+" -- }}}
+
 " -- General Settings {{{
 "tabs to spaces
 set tabstop=4
