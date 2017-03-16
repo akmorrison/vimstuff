@@ -77,6 +77,10 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 "edit files with leader command
 nnoremap <leader>e :e 
+"hitting <leader>[b|d]c will run bc or dc on that line, echo the output
+"and store into "c (calculator register)
+nnoremap <leader>dc :let @c=system("dc -e '".getline('.')."'")<CR>:echom @c<CR>
+nnoremap <leader>bc :let @c=system("echo ".getline('.')."\|bc")<CR>:echom @c<CR>
 " -- }}}
 
 " -- Insert mode mapping {{{
@@ -89,4 +93,11 @@ inoremap <left> <nop>
 inoremap <right> <nop>
 inoremap <down> <nop>
 inoremap <up> <nop>
+" -- }}}
+
+" -- Visual mode mapping {{{
+"same calculator functions from normal mode, but now inline selection
+vnoremap <leader>dc "cy:let @c=system("dc -e '".@c."'")<CR>:echom @c<CR>
+vnoremap <leader>bc "cy:let @c=system("echo ".@c."\|bc")<CR>:echom @c<CR>
+"note, the dc one works on multiple lines, bc does not
 " -- }}}
