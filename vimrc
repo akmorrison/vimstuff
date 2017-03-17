@@ -63,6 +63,11 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
+"resize all the panes
+nnoremap _ <c-w>-
+nnoremap + <c-w>+
+nnoremap < <c-w><
+nnoremap > <c-w>>
 "better navigation of tabs.
 nnoremap <c-p> :tabnext<CR>
 nnoremap <c-u> :tabprevious<CR>
