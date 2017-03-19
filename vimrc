@@ -33,6 +33,12 @@ set backspace=indent,eol,start
 syntax on
 set background=dark
 colorscheme iceberg
+"when entering insert mode, change the statusline color to bright blue
+augroup Statusline
+    autocmd!
+    autocmd InsertEnter * highlight StatusLine ctermfg=4 ctermbg=white
+    autocmd InsertLeave * highlight StatusLine ctermfg=black ctermbg=white
+augroup END
 " -- }}}
 
 " -- statusline Settings {{{
