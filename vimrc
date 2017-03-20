@@ -92,6 +92,12 @@ nnoremap <leader>e :e
 "and store into "c (calculator register)
 nnoremap <leader>dc :let @c=system("dc -e '".getline('.')."'")<CR>:echom @c<CR>
 nnoremap <leader>bc :let @c=system("echo ".getline('.')."\|bc")<CR>:echom @c<CR>
+"hitting <leader>y will copy from default register to system clipboard. Note,
+"this very much only works on macs. Also, <leader>p pastes from clipboard
+if system('uname | xargs echo -n') ==? "Darwin"
+    nnoremap <leader>y :call system('pbcopy', @")<CR>
+    nnoremap <leader>p :let temp=@"<CR>:let @"=system('pbpaste')<CR>p:let @"=temp<CR>
+endif
 " -- }}}
 
 " -- Insert mode mapping {{{
