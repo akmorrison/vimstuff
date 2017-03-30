@@ -1,19 +1,3 @@
-" -- Vundle Settings {{{
-" Options taken from vundle's github page https://github.com/VundleVim/Vundle.vim
-set nocompatible
-filetype off " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" All of your Pluginsmust be added before the following line
-call vundle#end()         " required
-filetype plugin indent on " required
-" -- }}}
 
 " -- General Settings {{{
 "tabs to spaces
@@ -60,6 +44,7 @@ augroup FileTypeGroup
     autocmd FileType cpp,c setlocal foldmethod=syntax
     autocmd FileType python setlocal foldmethod=indent
     autocmd FileType make setlocal noexpandtab
+    autocmd FileType tex setlocal makeprg=pdflatex\ %
 augroup END
 " -- }}}
 
@@ -88,6 +73,8 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 "edit files with leader command
 nnoremap <leader>e :e 
+"leader t runs make
+nnoremap <leader>m :make<CR>
 "hitting <leader>[b|d]c will run bc or dc on that line, echo the output
 "and store into "c (calculator register)
 nnoremap <leader>dc :let @c=system("dc -e '".getline('.')."'")<CR>:echom @c<CR>
