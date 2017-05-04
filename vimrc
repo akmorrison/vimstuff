@@ -29,7 +29,7 @@ augroup END
 set statusline=%F
 set statusline+=\ type:\ %y
 set statusline+=%=
-set statusline+=Line:\ %l
+set statusline+=Line:\ %l\/%L
 set statusline+=\ \ Column:\ %c
 set laststatus=2
 highlight StatusLine ctermfg=black ctermbg=white
@@ -44,7 +44,7 @@ augroup FileTypeGroup
     autocmd FileType cpp,c setlocal foldmethod=syntax
     autocmd FileType python setlocal foldmethod=indent
     autocmd FileType make setlocal noexpandtab
-    autocmd FileType tex setlocal makeprg=pdflatex\ %
+    autocmd FileType tex,plaintex setlocal makeprg=pdflatex\ %
 augroup END
 " -- }}}
 
@@ -75,6 +75,8 @@ nnoremap <leader>q :q<CR>
 nnoremap <leader>e :e 
 "leader t runs make
 nnoremap <leader>m :make<CR>
+"leader s runs :sh
+nnoremap <leader>s :sh<CR>
 "hitting <leader>[b|d]c will run bc or dc on that line, echo the output
 "and store into "c (calculator register)
 nnoremap <leader>dc :let @c=system("dc -e '".getline('.')."'")<CR>:echom @c<CR>
@@ -105,3 +107,6 @@ vnoremap <leader>dc "cy:let @c=system("dc -e '".@c."'")<CR>:echom @c<CR>
 vnoremap <leader>bc "cy:let @c=system("echo ".@c."\|bc")<CR>:echom @c<CR>
 "note, the dc one works on multiple lines, bc does not
 " -- }}}
+
+nnoremap <leader>h :%!xxd<CR>
+nnoremap <leader>n :%!xxd -r<CR>
