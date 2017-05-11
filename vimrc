@@ -45,6 +45,8 @@ augroup FileTypeGroup
     autocmd FileType python setlocal foldmethod=indent
     autocmd FileType make setlocal noexpandtab
     autocmd FileType tex,plaintex setlocal makeprg=pdflatex\ %
+    autocmd FileType java setlocal makeprg=javac\ %
+    autocmd FileType java nmap <leader>r :!java %:r<CR>
 augroup END
 " -- }}}
 
@@ -87,6 +89,8 @@ if system('uname | xargs echo -n') ==? "Darwin"
     nnoremap <leader>y :call system('pbcopy', @")<CR>
     nnoremap <leader>p :let temp=@"<CR>:let @"=system('pbpaste')<CR>p:let @"=temp<CR>
 endif
+"<leader>/ clears whatevers in the / register. Useful for clearing hls
+nnoremap <leader>/ :call setreg('/', [])<CR>:echo "cleared search register"<CR>
 " -- }}}
 
 " -- Insert mode mapping {{{
