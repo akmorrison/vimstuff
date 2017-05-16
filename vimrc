@@ -11,6 +11,9 @@ set number
 set vb t_vb=
 "allow using backspace in insert mode
 set backspace=indent,eol,start
+"don't break words when wrapping
+set wrap
+set linebreak
 " -- }}}
 
 " -- Color Settings {{{
@@ -75,10 +78,12 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 "edit files with leader command
 nnoremap <leader>e :e 
-"leader t runs make
+"leader m calls the makeprg
 nnoremap <leader>m :make<CR>
-"leader s runs :sh
+"leader s enters the shell
 nnoremap <leader>s :sh<CR>
+"leader then a dot toggles highlighted search terms and incsearch
+nnoremap <leader>. :set hls! incsearch!<CR>
 "hitting <leader>[b|d]c will run bc or dc on that line, echo the output
 "and store into "c (calculator register)
 nnoremap <leader>dc :let @c=system("dc -e '".getline('.')."'")<CR>:echom @c<CR>
