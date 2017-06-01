@@ -3,6 +3,7 @@
 "tabs to spaces
 set tabstop=4
 set expandtab
+set shiftwidth=4
 "set <leader> to comma
 let mapleader=','
 set lazyredraw
@@ -47,7 +48,7 @@ augroup FileTypeGroup
     autocmd FileType cpp,c setlocal foldmethod=syntax
     autocmd FileType python setlocal foldmethod=indent
     autocmd FileType make setlocal noexpandtab
-    autocmd FileType tex,plaintex setlocal makeprg=pdflatex\ %
+    autocmd FileType tex,plaintex setlocal makeprg=pdflatex\ % foldmethod=marker
     autocmd FileType java setlocal makeprg=javac\ %
     autocmd FileType java nmap <leader>r :!java %:r<CR>
 augroup END
