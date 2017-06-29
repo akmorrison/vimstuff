@@ -1,4 +1,4 @@
-
+set nocompatible
 " -- General Settings {{{
 "tabs to spaces
 set tabstop=4
@@ -40,6 +40,7 @@ highlight StatusLine ctermfg=black ctermbg=white
 " -- }}}
 
 " -- FileType specific Settings {{{
+filetype plugin on
 augroup FileTypeGroup
     autocmd!
     " arduino and processing files have c++ syntax highlighting
@@ -118,5 +119,31 @@ vnoremap <leader>bc "cy:let @c=system("echo ".@c."\|bc")<CR>:echom @c<CR>
 "note, the dc one works on multiple lines, bc does not
 " -- }}}
 
+" -- Tab autocompletion {{{
+"In insert mode, hitting <TAB> while on a character autocompletes
+function! Tab_Or_Complete() 		"use tab to autocomplete words
+	if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+		return "\<C-N>"
+	else
+		return "\<Tab>"
+	endif
+endfunction
+
+:inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
+:imap <S-Tab> <C-R>="\<C-P>"<CR>
+if system('uname | xargs echo -n') ==? "Darwin"
+    "hacky hacky mac thing, because it doesn't handle shift tab well
+    :imap [Z <S-Tab>
+endif
+" -- }}}
+
+"Joke remaps. Unless you actually want these
+"I enterred these so I could freak out the kids behind me in class
+"Switch to 1337 h4xxx0r mode
 nnoremap <leader>h :%!xxd<CR>
+"Switch to noob mode
 nnoremap <leader>n :%!xxd -r<CR>
+
+"Shifting entire lines up and down. Temp for now, if I like I'll keep
+nnoremap <DOWN> :m +1<CR>
+nnoremap <UP> :m -2<CR>
