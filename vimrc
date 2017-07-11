@@ -40,7 +40,7 @@ highlight StatusLine ctermfg=black ctermbg=white
 " -- }}}
 
 " -- FileType specific Settings {{{
-filetype plugin on
+filetype plugin on "I've slowly been moving these to their own plugin files
 augroup FileTypeGroup
     autocmd!
     " arduino and processing files have c++ syntax highlighting
@@ -50,8 +50,7 @@ augroup FileTypeGroup
     autocmd FileType python setlocal foldmethod=indent
     autocmd FileType make setlocal noexpandtab
     autocmd FileType tex,plaintex setlocal makeprg=pdflatex\ % foldmethod=marker
-    autocmd FileType java setlocal makeprg=javac\ %
-    autocmd FileType java nmap <leader>r :!java %:r<CR>
+    autocmd FileType tex,plaintex nnoremap <leader>te yyp:s/begin/end<CR>O
 augroup END
 " -- }}}
 
@@ -103,6 +102,7 @@ nnoremap <leader>/ :call setreg('/', [])<CR>:echo "cleared search register"<CR>
 " -- Insert mode mapping {{{
 "get out of insert mode faster
 inoremap jj <esc>
+inoremap jf <esc>
 "what for not letting me out of insert mode slowly
 inoremap <esc> <nop>
 "disallow navigating by arrowkeys
