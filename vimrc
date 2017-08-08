@@ -45,12 +45,6 @@ augroup FileTypeGroup
     autocmd!
     " arduino and processing files have c++ syntax highlighting
     autocmd BufNewFile,BufReadPost *.ino,*.pde setlocal filetype=cpp 
-    autocmd FileType vim setlocal foldmethod=marker
-    autocmd FileType cpp,c setlocal foldmethod=syntax
-    autocmd FileType python setlocal foldmethod=indent
-    autocmd FileType make setlocal noexpandtab
-    autocmd FileType tex,plaintex setlocal makeprg=pdflatex\ % foldmethod=marker
-    autocmd FileType tex,plaintex nnoremap <leader>te yyp:s/begin/end<CR>O
 augroup END
 " -- }}}
 
@@ -97,6 +91,8 @@ if system('uname | xargs echo -n') ==? "Darwin"
 endif
 "<leader>/ clears whatevers in the / register. Useful for clearing hls
 nnoremap <leader>/ :call setreg('/', [])<CR>:echo "cleared search register"<CR>
+"hitting space redraws the screen with the current line in the center
+nnoremap <space> zz
 " -- }}}
 
 " -- Insert mode mapping {{{
@@ -147,3 +143,6 @@ nnoremap <leader>n :%!xxd -r<CR>
 "Shifting entire lines up and down. Temp for now, if I like I'll keep
 nnoremap <DOWN> :m +1<CR>
 nnoremap <UP> :m -2<CR>
+"right arrow should jump to the next mispelled word. Left arrow should go to the last one
+nnoremap <RIGHT> ]s
+nnoremap <LEFT> [s
