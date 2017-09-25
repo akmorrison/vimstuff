@@ -100,6 +100,8 @@ function! Map_Normal_Things()
     "right arrow should jump to the next mispelled word. Left arrow should go to the last one
     nnoremap <right> ]s
     nnoremap <left> [s
+    "used to populate or depopulate the search register
+    nnoremap <leader>/ :call Handle_Search_Reg( 0 )<CR>
 endfunction
 function! Unmap_Normal_Things()
     nunmap <c-h>
@@ -133,6 +135,7 @@ function! Unmap_Normal_Things()
     nunmap <up>
     nunmap <right>
     nunmap <left>
+    nunmap <leader>/
 endfunction
 " -- }}}
 
@@ -174,10 +177,13 @@ endfunction
 function! Map_Visual_Things()
     vnoremap <leader>dc "cy:let @c=system("dc -e '".@c."'")<CR>:echom @c<CR>
     vnoremap <leader>bc "cy:let @c=system("echo ".@c."\|bc")<CR>:echom @c<CR>
+    "used to populate or depopulate the search register
+    vnoremap <leader>/ :call Handle_Search_Reg( 1 )<CR>
 endfunction
 function! Unmap_Visual_Things()
     vunmap <leader>dc
     vunmap <leader>bc
+    vunmap <leader>/
 endfunction
 "note, the dc one works on multiple lines, bc does not
 " -- }}}
@@ -194,8 +200,6 @@ endfunction
 " -- }}}
 
 " -- Clear or populate search register on <leader>/ {{{
-nnoremap <leader>/ :call Handle_Search_Reg( 0 )<CR>
-vnoremap <leader>/ :call Handle_Search_Reg( 1 )<CR>
 function! Handle_Search_Reg( visual )
     if a:visual
         set hls is
@@ -228,7 +232,7 @@ function! Unmap_Everything()
     call Unmap_Normal_Things()
     call Unmap_Insert_Things()
     call Unmap_Visual_Things()
-    echo "Removed all mappings"
+    echo "Removed all the mappings"
 endfunction
 
 nnoremap <leader>vm :call Map_Everything()<CR>
@@ -238,4 +242,16 @@ nnoremap <leader>vu :call Unmap_Everything()<CR>
 call Map_Normal_Things()
 call Map_Insert_Things()
 call Map_Visual_Things()
+
+" Let's do a cool thing where <leader><leader> toggles whether your mappings are
+" applied or not
+function! Toggle_Everything()
+	if mapcheck("<c-j>", "N") == ""
+		call Map_Everything()
+	else
+        call Unmap_Everything()
+	endif
+endfunction
+nnoremap <leader><leader> :call Toggle_Everything()<CR>
+
 " -- }}}
