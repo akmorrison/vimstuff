@@ -24,7 +24,7 @@ colorscheme iceberg
 "when entering insert mode, change the statusline color to bright blue
 augroup Statusline
     autocmd!
-    autocmd InsertEnter * highlight StatusLine ctermfg=4 ctermbg=white
+    autocmd InsertEnter * highlight StatusLine ctermfg=white ctermbg=4
     autocmd InsertLeave * highlight StatusLine ctermfg=black ctermbg=white
 augroup END
 " -- }}}
@@ -36,7 +36,8 @@ set statusline+=%=
 set statusline+=Line:\ %l\/%L
 set statusline+=\ \ Column:\ %c
 set laststatus=2
-highlight StatusLine ctermfg=black ctermbg=white
+highlight StatusLine ctermfg=black ctermbg=white cterm=italic
+highlight StatusLineNC ctermfg=white ctermbg=black cterm=italic
 " -- }}}
 
 " -- FileType specific Settings {{{
@@ -49,69 +50,135 @@ augroup END
 " -- }}}
 
 " -- Normal mode mapping {{{
-"better navigation of splits
-nnoremap <c-h> <c-w>h
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-l> <c-w>l
-"resize all the panes
-nnoremap _ <c-w>-
-nnoremap + <c-w>+
-nnoremap < <c-w><
-nnoremap > <c-w>>
-"better navigation of tabs.
-nnoremap <c-p> :tabnext<CR>
-nnoremap <c-u> :tabprevious<CR>
-nnoremap <c-n> :tabnew<CR>
-"delete a line, and replace with most recently yanked line
-nnoremap dp ddk"0p
-"allows editing and sourcing of vimrc file
-nnoremap <leader>ve :vsp $MYVIMRC<CR>
-nnoremap <leader>vs :source $MYVIMRC<CR>
-"better saving and quitting
-nnoremap <leader>w :w<CR>
-nnoremap <leader>q :q<CR>
-"edit files with leader command
-nnoremap <leader>e :e 
-"leader m calls the makeprg
-nnoremap <leader>m :make<CR>
-"leader s enters the shell
-nnoremap <leader>s :sh<CR>
-"leader then a dot toggles highlighted search terms and incsearch
-nnoremap <leader>. :set hls! incsearch!<CR>
-"hitting <leader>[b|d]c will run bc or dc on that line, echo the output
-"and store into "c (calculator register)
-nnoremap <leader>dc :let @c=system("dc -e '".getline('.')."'")<CR>:echom @c<CR>
-nnoremap <leader>bc :let @c=system("echo ".getline('.')."\|bc")<CR>:echom @c<CR>
-"hitting <leader>y will copy from default register to system clipboard. Note,
-"this very much only works on macs. Also, <leader>p pastes from clipboard
-if system('uname | xargs echo -n') ==? "Darwin"
-    nnoremap <leader>y :call system('pbcopy', @")<CR>
-    nnoremap <leader>p :let temp=@"<CR>:let @"=system('pbpaste')<CR>p:let @"=temp<CR>
-endif
-"<leader>/ clears whatevers in the / register. Useful for clearing hls
-nnoremap <leader>/ :call setreg('/', [])<CR>:echo "cleared search register"<CR>
-"hitting space redraws the screen with the current line in the center
-nnoremap <space> zz
+function! Map_Normal_Things()
+    "better navigation of splits
+    nnoremap <c-h> <c-w>h
+    nnoremap <c-j> <c-w>j
+    nnoremap <c-k> <c-w>k
+    nnoremap <c-l> <c-w>l
+    "resize all the panes
+    nnoremap _ <c-w>-
+    nnoremap + <c-w>+
+    nnoremap < <c-w><
+    nnoremap > <c-w>>
+    "better navigation of tabs.
+    nnoremap <c-p> :tabnext<CR>
+    nnoremap <c-u> :tabprevious<CR>
+    nnoremap <c-n> :tabnew<CR>
+    "delete a line, and replace with most recently yanked line
+    nnoremap dp ddk"0p
+    "allows editing and sourcing of vimrc file
+    nnoremap <leader>ve :vsp $MYVIMRC<CR>
+    nnoremap <leader>vs :source $MYVIMRC<CR>
+    "better saving and quitting
+    nnoremap <leader>w :w<CR>
+    nnoremap <leader>q :q<CR>
+    "edit files with leader command
+    nnoremap <leader>e :e 
+    "leader m calls the makeprg
+    nnoremap <leader>m :make<CR>
+    "leader s enters the shell
+    nnoremap <leader>s :sh<CR>
+    "leader then a dot toggles highlighted search terms and incsearch
+    nnoremap <leader>. :set hls! incsearch!<CR>
+    "hitting <leader>[b|d]c will run bc or dc on that line, echo the output
+    "and store into "c (calculator register)
+    nnoremap <leader>dc :let @c=system("dc -e '".getline('.')."'")<CR>:echom @c<CR>
+    nnoremap <leader>bc :let @c=system("echo ".getline('.')."\|bc")<CR>:echom @c<CR>
+    "hitting <leader>y will copy from default register to system clipboard. Note,
+    "this very much only works on macs. Also, <leader>p pastes from clipboard
+    if system('uname | xargs echo -n') ==? "Darwin"
+        nnoremap <leader>y :call system('pbcopy', @")<CR>
+        nnoremap <leader>p :let temp=@"<CR>:let @"=system('pbpaste')<CR>p:let @"=temp<CR>
+    endif
+    "<leader>/ clears whatevers in the / register. Useful for clearing hls
+    "hitting space redraws the screen with the current line in the center
+    nnoremap <space> zz
+    "Shifting entire lines up and down. Temp for now, if I like I'll keep
+    nnoremap <down> :m +1<cr>
+    nnoremap <up> :m -2<cr>
+    "right arrow should jump to the next mispelled word. Left arrow should go to the last one
+    nnoremap <right> ]s
+    nnoremap <left> [s
+endfunction
+function! Unmap_Normal_Things()
+    nunmap <c-h>
+    nunmap <c-j>
+    nunmap <c-k>
+    nunmap <c-l>
+    nunmap _
+    nunmap +
+    nunmap <
+    nunmap >
+    nunmap <c-p>
+    nunmap <c-u>
+    nunmap <c-n>
+    nunmap dp
+    nunmap <leader>ve
+    nunmap <leader>vs
+    nunmap <leader>w
+    nunmap <leader>q
+    nunmap <leader>e
+    nunmap <leader>m
+    nunmap <leader>s
+    nunmap <leader>.
+    nunmap <leader>dc
+    nunmap <leader>bc
+    if system('uname | xargs echo -n') ==? "Darwin"
+        nunmap <leader>y
+        nunmap <leader>p
+    endif
+    nunmap <space>
+    nunmap <down>
+    nunmap <up>
+    nunmap <right>
+    nunmap <left>
+endfunction
 " -- }}}
 
 " -- Insert mode mapping {{{
-"get out of insert mode faster
-inoremap jj <esc>
-inoremap jf <esc>
-"what for not letting me out of insert mode slowly
-inoremap <esc> <nop>
-"disallow navigating by arrowkeys
-inoremap <left> <nop>
-inoremap <right> <nop>
-inoremap <down> <nop>
-inoremap <up> <nop>
+function! Map_Insert_Things()
+    "get out of insert mode faster
+    inoremap jj <esc>
+    inoremap jf <esc>
+    "disallow navigating by arrowkeys
+    inoremap <left> <nop>
+    inoremap <right> <nop>
+    inoremap <down> <nop>
+    inoremap <up> <nop>
+    inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
+    imap <S-Tab> <C-R>="\<C-P>"<CR>
+    if system('uname | xargs echo -n') ==? "Darwin"
+        "hacky hacky mac thing, because it doesn't handle shift tab well
+        imap [Z <S-Tab>
+    endif
+endfunction
+function! Unmap_Insert_Things()
+    iunmap jj
+    iunmap jf
+    iunmap <left>
+    iunmap <right>
+    iunmap <down>
+    iunmap <up>
+    iunmap <Tab>
+    iunmap <S-Tab>
+    if system('uname | xargs echo -n') ==? "Darwin"
+        "hacky hacky mac thing, because it doesn't handle shift tab well
+        iunmap [Z <S-Tab>
+    endif
+endfunction
 " -- }}}
 
 " -- Visual mode mapping {{{
 "same calculator functions from normal mode, but now inline selection
-vnoremap <leader>dc "cy:let @c=system("dc -e '".@c."'")<CR>:echom @c<CR>
-vnoremap <leader>bc "cy:let @c=system("echo ".@c."\|bc")<CR>:echom @c<CR>
+function! Map_Visual_Things()
+    vnoremap <leader>dc "cy:let @c=system("dc -e '".@c."'")<CR>:echom @c<CR>
+    vnoremap <leader>bc "cy:let @c=system("echo ".@c."\|bc")<CR>:echom @c<CR>
+endfunction
+function! Unmap_Visual_Things()
+    vunmap <leader>dc
+    vunmap <leader>bc
+endfunction
 "note, the dc one works on multiple lines, bc does not
 " -- }}}
 
@@ -124,25 +191,51 @@ function! Tab_Or_Complete() 		"use tab to autocomplete words
 		return "\<Tab>"
 	endif
 endfunction
-
-:inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
-:imap <S-Tab> <C-R>="\<C-P>"<CR>
-if system('uname | xargs echo -n') ==? "Darwin"
-    "hacky hacky mac thing, because it doesn't handle shift tab well
-    :imap [Z <S-Tab>
-endif
 " -- }}}
 
-"Joke remaps. Unless you actually want these
-"I enterred these so I could freak out the kids behind me in class
-"Switch to 1337 h4xxx0r mode
-nnoremap <leader>h :%!xxd<CR>
-"Switch to noob mode
-nnoremap <leader>n :%!xxd -r<CR>
+" -- Clear or populate search register on <leader>/ {{{
+nnoremap <leader>/ :call Handle_Search_Reg( 0 )<CR>
+vnoremap <leader>/ :call Handle_Search_Reg( 1 )<CR>
+function! Handle_Search_Reg( visual )
+    if a:visual
+        set hls is
+        normal! gv"zy
+        echo "put \"" . @z . "\" in the search register"
+        let @/ = @z
+    else
+        if @/==""
+            set hls is
+            normal! mz"zyiw`z
+            echo "put \"" . @z . "\" in the search register"
+            let @/ = @z
+        else
+            call setreg('/', [])
+            echo "cleared search register"
+        endif
+    endif
+    call setreg('z', [])
+endfunction
+"  -- }}}
 
-"Shifting entire lines up and down. Temp for now, if I like I'll keep
-nnoremap <DOWN> :m +1<CR>
-nnoremap <UP> :m -2<CR>
-"right arrow should jump to the next mispelled word. Left arrow should go to the last one
-nnoremap <RIGHT> ]s
-nnoremap <LEFT> [s
+" -- Apply and unapply all my mappings with one mapping {{{
+function! Map_Everything()
+    call Map_Normal_Things()
+    call Map_Insert_Things()
+    call Map_Visual_Things()
+    echo "Applied all the mappings"
+endfunction
+function! Unmap_Everything()
+    call Unmap_Normal_Things()
+    call Unmap_Insert_Things()
+    call Unmap_Visual_Things()
+    echo "Removed all mappings"
+endfunction
+
+nnoremap <leader>vm :call Map_Everything()<CR>
+nnoremap <leader>vu :call Unmap_Everything()<CR>
+" On startup, apply everything
+" can't do this with Map_Everything, because that prints a thing
+call Map_Normal_Things()
+call Map_Insert_Things()
+call Map_Visual_Things()
+" -- }}}
