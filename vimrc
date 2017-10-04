@@ -79,6 +79,8 @@ function! Map_Normal_Things()
     nnoremap <leader>m :make<CR>
     "leader s enters the shell
     nnoremap <leader>s :sh<CR>
+    "leader b breaks the screen into visual splits
+    nnoremap <leader>b <c-w>v
     "leader then a dot toggles highlighted search terms and incsearch
     nnoremap <leader>. :set hls! incsearch!<CR>
     "hitting <leader>[b|d]c will run bc or dc on that line, echo the output
