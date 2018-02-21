@@ -24,7 +24,7 @@ colorscheme iceberg
 "when entering insert mode, change the statusline color to bright blue
 augroup Statusline
     autocmd!
-    autocmd InsertEnter * highlight StatusLine ctermfg=white ctermbg=4
+    autocmd InsertEnter * highlight StatusLine ctermfg=DarkBlue  ctermbg=white
     autocmd InsertLeave * highlight StatusLine ctermfg=black ctermbg=white
 augroup END
 " -- }}}
@@ -104,6 +104,9 @@ function! Map_Normal_Things()
     nnoremap <left> [s
     "used to populate or depopulate the search register
     nnoremap <leader>/ :call Handle_Search_Reg( 0 )<CR>
+    "open a scratch buffer on <leader>[cx]. c is horizontal, x is vertical
+    nnoremap <leader>c :call Scratch_Buffer( 0 )<CR>
+    nnoremap <leader>x :call Scratch_Buffer( 1 )<CR>
 endfunction
 function! Unmap_Normal_Things()
     nunmap <c-h>
@@ -169,7 +172,7 @@ function! Unmap_Insert_Things()
     iunmap <S-Tab>
     if system('uname | xargs echo -n') ==? "Darwin"
         "hacky hacky mac thing, because it doesn't handle shift tab well
-        iunmap [Z <S-Tab>
+        iunmap [Z
     endif
 endfunction
 " -- }}}
@@ -200,6 +203,19 @@ function! Tab_Or_Complete() 		"use tab to autocomplete words
 	endif
 endfunction
 " -- }}}
+
+" -- Open scratch buffer {{{
+function! Scratch_Buffer( vertical )
+    echo ""
+    if a:vertical
+        new
+    else
+        vnew
+    endif
+    setlocal buftype=nofile
+    startinsert
+endfunction
+"  }}}
 
 " -- Clear or populate search register on <leader>/ {{{
 function! Handle_Search_Reg( visual )
